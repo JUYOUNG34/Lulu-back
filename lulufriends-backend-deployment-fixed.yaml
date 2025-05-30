@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lulufriends-backend-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: lulufriends-backend
+  template:
+    metadata:
+      labels:
+        app: lulufriends-backend
+    spec:
+      containers:
+        - name: lulufriends-backend
+          image: lulufriends-registry.kr.ncr.ntruss.com/lulufriends-backend:new-env-20250530-180804
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - secretRef:
+                name: lulufriends-secret
+          env:
+            - name: DB_URL
+              valueFrom:
+                secretKeyRef:
+                  name: lulufriends-secret
+                  key: DB_URL
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: lulufriends-secret
+                  key: DB_USERNAME
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: lulufriends-secret
+                  key: DB_PASSWORD
+      imagePullSecrets:
+        - name: regcred
