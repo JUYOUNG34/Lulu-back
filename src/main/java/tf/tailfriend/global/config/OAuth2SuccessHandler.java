@@ -50,7 +50,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         CookieUtils.addCookie(response, "accessToken", token, 60 * 60 * 24); // 1일짜리
 
 
-        String redirectUrl = mainUrl+"/oauth2/success";
+        String redirectUrl = "https://lulufriends.kro.kr/oauth2/success";
         System.out.println(redirectUrl);
         response.sendRedirect(redirectUrl);
 

@@ -49,7 +49,7 @@ public class PaymentService {
                 .name(facility.getName())
                 .imageUrl(
                         facility.getPhotos().isEmpty()
-                                ? "https://kr.object.ncloudstorage.com/tailfriends-buck/uploads/board/join-logo.png"
+                                ? "https://kr.object.ncloudstorage.com/lulufriends-bucket/uploads/board/join-logo.png"
                                 : storageService.generatePresignedUrl(facility.getPhotos().get(0).getFile().getPath())
                 )
                 .createdAt(payment.getCreatedAt())

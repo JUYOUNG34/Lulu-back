@@ -1,0 +1,53 @@
+spring:
+  #  profiles:
+#    active: local
+
+  application:
+    name: tailfriend
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+  session:
+    redis:
+      namespace: spring:session
+
+
+
+  datasource:
+    url: jdbc:mysql://db-33p2cg-kr.vpc-pub-cdb.ntruss.com/tailfriends?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      idle-timeout: 30000
+      max-lifetime: 1800000
+      connection-timeout: 3000
+
+
+  session:
+    store-type: redis
+    redis:
+      namespace: "lulufriends:session"
+    timeout: 1800s
+    cookie:
+      name: "LULUFRIENDS_SESSION"
+      max-age: 1800
+      http-only: true
+      secure: false
+      same-site: lax
+
+server:
+  servlet:
+    session:
+      cookie:
+        secure: false
+        same-site: lax
+        http-only: true
+        max-age: 1800
+        path: /

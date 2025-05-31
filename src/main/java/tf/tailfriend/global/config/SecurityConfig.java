@@ -112,9 +112,9 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.addAllowedOrigin("http://localhost:5173");
-        configuration.addAllowedOrigin("http://tailfriends.kro.kr");
-        configuration.addAllowedOrigin("https://tailfriends.kro.kr");
-        configuration.addAllowedOrigin("https://tailfriends.kro.kr:8080");
+        configuration.addAllowedOrigin("http://lulufriends.kro.kr");
+        configuration.addAllowedOrigin("https://lulufriends.kro.kr");
+        configuration.addAllowedOrigin("https://lulufriends.kro.kr:8080");
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);

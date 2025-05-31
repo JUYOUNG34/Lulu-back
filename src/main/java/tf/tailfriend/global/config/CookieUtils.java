@@ -48,7 +48,7 @@ public class CookieUtils {
         ResponseCookie cookie = ResponseCookie.from(name, value)
                 .httpOnly(true)
                 .secure(isLinux)
-                .path("/")
+                .path("/").domain(".kro.kr")
                 .maxAge(maxAge)
                 .sameSite(isLinux ? "None" : "Lax")
                 .build();
@@ -69,7 +69,7 @@ public class CookieUtils {
         ResponseCookie cookie = ResponseCookie.from(name, "")
                 .httpOnly(true)
                 .secure(isLinux)
-                .path("/")
+                .path("/").domain(".kro.kr")
                 .maxAge(0) // 쿠키 삭제
                 .sameSite(isLinux ? "None" : "Lax")
                 .build();
