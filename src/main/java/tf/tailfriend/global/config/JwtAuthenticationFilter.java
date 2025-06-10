@@ -35,7 +35,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain)
             throws ServletException, IOException {
-      
+
+        String requestURI = request.getRequestURI();
+
+        // ✅ 관리자 로그인 관련 경로는 JWT 필터를 우회
+        if (requestURI.equals("/api/admin/login") ||
+                requestURI.equals("/api/admin/register") ||
+                requestURI.equals("/api/admin/auth/validate") ||
+                requestURI.startsWith("/api/oauth2/") ||
+                requestURI.startsWith("/api/login/oauth2/")) {
+
+            log.info("JWT 필터 우회: {}", requestURI);
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         String jwt = resolveToken(request);
 
         log.info("Request URL: {}", request.getRequestURL());

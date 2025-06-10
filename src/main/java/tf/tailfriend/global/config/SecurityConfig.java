@@ -59,42 +59,39 @@ public class SecurityConfig {
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(jwtAuthEntryPoint))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                                .requestMatchers("/static/**").permitAll()  // 정적 자원 경로는 인증 없이 접근 가능
+                        .requestMatchers("/static/**").permitAll()  // 정적 자원 경로는 인증 없이 접근 가능
+
                         // OAuth2 관련
                         .requestMatchers("/api/oauth2/authorization/**").permitAll()
-                                .requestMatchers("/static/**").permitAll()
-                                .requestMatchers("/api/login/oauth2/code/**").permitAll()
+                        .requestMatchers("/static/**").permitAll()
+                        .requestMatchers("/api/login/oauth2/code/**").permitAll()
 
-                        // 관리자 API - 로그인, 인증 체크, 로그아웃은 누구나 접근 가능
-                        .requestMatchers("/api/admin/login", "/api/admin/auth/validate", "/api/admin/logout").permitAll()
-                        .requestMatchers("/api/admin/register").permitAll()
+                        .requestMatchers("/api/admin/**").permitAll()
 
-                        // 나머지 관리자 API는 ADMIN 권한 필요
+
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
 
                         // 일반 API
-//                        .requestMatchers("/api/**").permitAll()
                         .requestMatchers("/api/**").hasRole("USER")
 
                         // 정적 페이지
                         .requestMatchers("/login").permitAll()
                         .requestMatchers("/admin").permitAll()
-                        // 나머지 API 권한 설정
 
 
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2
                         .authorizationEndpoint(endpoint -> endpoint
-                                .baseUri("/api/oauth2/authorization") // ✅ 여기서 경로 커스터마이징
+                                .baseUri("/api/oauth2/authorization")
                                 .authorizationRequestRepository(cookieOAuth2AuthorizationRequestRepository())
                         )
                         .redirectionEndpoint(redirection -> redirection
-                                .baseUri("/api/login/oauth2/code/**") // ✅ 여기를 꼭 추가해야 custom redirect-uri 작동함!
+                                .baseUri("/api/login/oauth2/code/**")
                         )
-                        .successHandler(successHandler) // OAuth2 로그인 성공 후 핸들러 설정
+                        .successHandler(successHandler)
                         .failureHandler((request, response, exception) -> {
-                            exception.printStackTrace(); // 에러 로그 출력
+                            exception.printStackTrace();
                             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                             response.setContentType("application/json");
                             response.getWriter().write("{\"error\": \"" + exception.getMessage() + "\"}");
@@ -106,7 +103,6 @@ public class SecurityConfig {
 
         return http.build();
     }
-
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
